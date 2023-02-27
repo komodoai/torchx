@@ -589,6 +589,7 @@ class SlurmScheduler(DirWorkspaceMixin, Scheduler[SlurmOpts]):
 def create_scheduler(session_name: str, **kwargs: Any) -> SlurmScheduler:
     return SlurmScheduler(
         session_name=session_name,
+        **kwargs,
     )
 
 

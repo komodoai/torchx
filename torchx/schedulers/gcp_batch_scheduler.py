@@ -477,4 +477,5 @@ class GCPBatchScheduler(Scheduler[GCPBatchOpts]):
 def create_scheduler(session_name: str, **kwargs: object) -> GCPBatchScheduler:
     return GCPBatchScheduler(
         session_name=session_name,
+        **kwargs,
     )

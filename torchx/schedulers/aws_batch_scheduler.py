@@ -799,4 +799,5 @@ class AWSBatchScheduler(DockerWorkspaceMixin, Scheduler[AWSBatchOpts]):
 def create_scheduler(session_name: str, **kwargs: object) -> AWSBatchScheduler:
     return AWSBatchScheduler(
         session_name=session_name,
+        **kwargs,
     )

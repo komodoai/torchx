@@ -1127,6 +1127,6 @@ class LogIterator:
 def create_scheduler(session_name: str, **kwargs: Any) -> LocalScheduler:
     return LocalScheduler(
         session_name=session_name,
-        cache_size=kwargs.get("cache_size", 100),
         image_provider_class=CWDImageProvider,
+        **kwargs,
     )

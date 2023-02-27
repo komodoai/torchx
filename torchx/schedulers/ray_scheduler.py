@@ -447,4 +447,7 @@ def create_scheduler(session_name: str, **kwargs: Any) -> "RayScheduler":
             "Ray is not installed in the current Python environment."
         )
 
-    return RayScheduler(session_name=session_name)
+    return RayScheduler(
+        session_name=session_name,
+        **kwargs,
+    )

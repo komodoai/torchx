@@ -1235,6 +1235,7 @@ class KubernetesMCADScheduler(DockerWorkspaceMixin, Scheduler[KubernetesMCADOpts
 def create_scheduler(session_name: str, **kwargs: Any) -> KubernetesMCADScheduler:
     return KubernetesMCADScheduler(
         session_name=session_name,
+        **kwargs,
     )
 
 

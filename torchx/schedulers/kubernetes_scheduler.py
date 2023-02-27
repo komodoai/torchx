@@ -780,6 +780,7 @@ class KubernetesScheduler(DockerWorkspaceMixin, Scheduler[KubernetesOpts]):
 def create_scheduler(session_name: str, **kwargs: Any) -> KubernetesScheduler:
     return KubernetesScheduler(
         session_name=session_name,
+        **kwargs,
     )
 
 

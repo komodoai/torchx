@@ -576,4 +576,5 @@ class LsfScheduler(Scheduler[LsfOpts]):
 def create_scheduler(session_name: str, **kwargs: Any) -> LsfScheduler:
     return LsfScheduler(
         session_name=session_name,
+        **kwargs,
     )

@@ -476,4 +476,5 @@ def _to_str(a: Union[str, bytes]) -> str:
 def create_scheduler(session_name: str, **kwargs: Any) -> DockerScheduler:
     return DockerScheduler(
         session_name=session_name,
+        **kwargs,
     )
