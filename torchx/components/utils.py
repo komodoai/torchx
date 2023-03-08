@@ -81,6 +81,7 @@ def sh(
     env: Optional[Dict[str, str]] = None,
     max_retries: int = 0,
     mounts: Optional[List[str]] = None,
+    workdir: Optional[str] = None,
 ) -> specs.AppDef:
     """
     Runs the provided command via sh. Currently sh does not support
@@ -118,6 +119,7 @@ def sh(
                 env=env,
                 max_retries=max_retries,
                 mounts=specs.parse_mounts(mounts) if mounts else [],
+                workdir=workdir,
             )
         ],
     )

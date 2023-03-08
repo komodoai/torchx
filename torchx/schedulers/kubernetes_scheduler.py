@@ -317,6 +317,7 @@ def role_to_pod(name: str, role: Role, service_account: Optional[str]) -> "V1Pod
         ],
         volume_mounts=volume_mounts,
         security_context=security_context,
+        working_dir=role.workdir,
     )
 
     return V1Pod(

@@ -346,6 +346,7 @@ class Role:
     mounts: List[Union[BindMount, VolumeMount, DeviceMount]] = field(
         default_factory=list
     )
+    workdir: str = None
 
     def pre_proc(
         self,
