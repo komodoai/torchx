@@ -389,6 +389,7 @@ def app_to_resource(
                 "replicas": 1,
                 "name": name,
                 "template": pod,
+                "backoffLimit": 0,
             }
             if role.max_retries > 0:
                 task["maxRetry"] = role.max_retries
