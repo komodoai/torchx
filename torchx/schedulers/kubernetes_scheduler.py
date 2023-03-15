@@ -414,6 +414,7 @@ does NOT support retries correctly. More info: https://github.com/volcano-sh/vol
             "svc": ["--publish-not-ready-addresses"],
             "env": [],
         },
+        "backoffLimit": 0,
     }
     if priority_class is not None:
         job_spec["priorityClassName"] = priority_class
