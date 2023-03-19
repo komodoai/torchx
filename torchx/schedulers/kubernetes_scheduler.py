@@ -810,7 +810,8 @@ def create_scheduler(session_name: str, **kwargs: Any) -> KubernetesScheduler:
 def pod_labels(
     app: AppDef, role_idx: int, role: Role, replica_id: int, app_id: str
 ) -> Dict[str, str]:
-    return {
+    print(role.metadata)
+    retval = {
         LABEL_VERSION: torchx.__version__,
         LABEL_APP_NAME: app.name,
         LABEL_ROLE_INDEX: str(role_idx),
@@ -820,3 +821,5 @@ def pod_labels(
         LABEL_ORGANIZATION: "torchx.pytorch.org",
         LABEL_UNIQUE_NAME: app_id,
     }
+    retval.update(role.metadata.get("labels", {}))
+    return retval
