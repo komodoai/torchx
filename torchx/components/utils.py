@@ -13,7 +13,7 @@ meaningful stages in a workflow.
 
 import os
 import shlex
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import torchx
 import torchx.specs as specs
@@ -82,6 +82,7 @@ def sh(
     max_retries: int = 0,
     mounts: Optional[List[str]] = None,
     workdir: Optional[str] = None,
+    metadata: Optional[Dict[str, Any]],
 ) -> specs.AppDef:
     """
     Runs the provided command via sh. Currently sh does not support
@@ -118,6 +119,7 @@ def sh(
                 resource=specs.resource(cpu=cpu, gpu=gpu, memMB=memMB, h=h),
                 env=env,
                 max_retries=max_retries,
+                metadata=metadata,
                 mounts=specs.parse_mounts(mounts) if mounts else [],
                 workdir=workdir,
             )
