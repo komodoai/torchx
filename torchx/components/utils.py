@@ -82,7 +82,7 @@ def sh(
     max_retries: int = 0,
     mounts: Optional[List[str]] = None,
     workdir: Optional[str] = None,
-    metadata: Optional[Dict[str, Any]],
+    metadata: Optional[Dict[str, Any]] = None,
 ) -> specs.AppDef:
     """
     Runs the provided command via sh. Currently sh does not support
