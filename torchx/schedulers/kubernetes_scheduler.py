@@ -390,6 +390,7 @@ def app_to_resource(
                 "name": name,
                 "template": pod,
                 "backoffLimit": 0,
+                "imagePullPolicy": "Always",
             }
             if role.max_retries > 0:
                 task["maxRetry"] = role.max_retries
