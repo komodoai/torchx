@@ -175,7 +175,9 @@ def sanitize_for_serialization(obj: object) -> object:
     return api.sanitize_for_serialization(obj)
 
 
-def role_to_pod(name: str, role: Role, service_account: Optional[str]) -> "V1Pod":
+def role_to_pod(
+    name: str, role: Role, service_account: Optional[str]
+) -> "V1Pod":
     from kubernetes.client.models import (  # noqa: F811 redefinition of unused
         V1Container,
         V1ContainerPort,
@@ -210,7 +212,9 @@ def role_to_pod(name: str, role: Role, service_account: Optional[str]) -> "V1Pod
         request_memMB = max(int(resource.memMB) - RESERVED_MEMMB, 0)
         requests["memory"] = f"{request_memMB}M"
     if resource.gpu > 0:
-        requests["nvidia.com/gpu"] = limits["nvidia.com/gpu"] = str(resource.gpu)
+        requests["nvidia.com/gpu"] = limits["nvidia.com/gpu"] = str(
+            resource.gpu
+        )
 
     for device_name, device_limit in resource.devices.items():
         limits[device_name] = str(device_limit)
@@ -222,7 +226,9 @@ def role_to_pod(name: str, role: Role, service_account: Optional[str]) -> "V1Pod
 
     node_selector: Dict[str, str] = {}
     if LABEL_INSTANCE_TYPE in resource.capabilities:
-        node_selector[LABEL_INSTANCE_TYPE] = resource.capabilities[LABEL_INSTANCE_TYPE]
+        node_selector[LABEL_INSTANCE_TYPE] = resource.capabilities[
+            LABEL_INSTANCE_TYPE
+        ]
 
     # To support PyTorch dataloaders we need to set /dev/shm to larger than the
     # 64M default so we mount an unlimited sized tmpfs directory on it.
@@ -288,7 +294,8 @@ def role_to_pod(name: str, role: Role, service_account: Optional[str]) -> "V1Pod
                     name=mount_name,
                     mount_path=mount.dst_path,
                     read_only=(
-                        "w" not in mount.permissions and "m" not in mount.permissions
+                        "w" not in mount.permissions
+                        and "m" not in mount.permissions
                     ),
                 )
             )
@@ -402,7 +409,9 @@ does NOT support retries correctly. More info: https://github.com/volcano-sh/vol
                 warnings.warn(msg)
             if role.min_replicas is not None:
                 # first min_replicas tasks are required, afterward optional
-                task["minAvailable"] = 1 if replica_id < role.min_replicas else 0
+                task["minAvailable"] = (
+                    1 if replica_id < role.min_replicas else 0
+                )
             tasks.append(task)
 
     job_retries = min(role.max_retries for role in app.roles)
@@ -544,7 +553,9 @@ class KubernetesScheduler(DockerWorkspaceMixin, Scheduler[KubernetesOpts]):
         client: Optional["ApiClient"] = None,
         docker_client: Optional["DockerClient"] = None,
     ) -> None:
-        super().__init__("kubernetes", session_name, docker_client=docker_client)
+        super().__init__(
+            "kubernetes", session_name, docker_client=docker_client
+        )
 
         self._client = client
 
@@ -616,10 +627,14 @@ class KubernetesScheduler(DockerWorkspaceMixin, Scheduler[KubernetesOpts]):
     ) -> AppDryRunInfo[KubernetesJob]:
         queue = cfg.get("queue")
         if not isinstance(queue, str):
-            raise TypeError(f"config value 'queue' must be a string, got {queue}")
+            raise TypeError(
+                f"config value 'queue' must be a string, got {queue}"
+            )
 
         # map any local images to the remote image
-        images_to_push = self.dryrun_push_images(app, cast(Mapping[str, CfgVal], cfg))
+        images_to_push = self.dryrun_push_images(
+            app, cast(Mapping[str, CfgVal], cfg)
+        )
 
         service_account = cfg.get("service_account")
         assert service_account is None or isinstance(
@@ -708,7 +723,9 @@ class KubernetesScheduler(DockerWorkspaceMixin, Scheduler[KubernetesOpts]):
                         roles_statuses[role] = RoleStatus(role, [])
                     roles[role].num_replicas += 1
                     roles_statuses[role].replicas.append(
-                        ReplicaStatus(id=int(idx), role=role, state=state, hostname="")
+                        ReplicaStatus(
+                            id=int(idx), role=role, state=state, hostname=""
+                        )
                     )
         else:
             app_state = AppState.UNKNOWN
@@ -733,7 +750,9 @@ class KubernetesScheduler(DockerWorkspaceMixin, Scheduler[KubernetesOpts]):
         assert until is None, "kubernetes API doesn't support until"
 
         if streams not in (None, Stream.COMBINED):
-            raise ValueError("KubernetesScheduler only supports COMBINED log stream")
+            raise ValueError(
+                "KubernetesScheduler only supports COMBINED log stream"
+            )
 
         from kubernetes import client, watch
 
