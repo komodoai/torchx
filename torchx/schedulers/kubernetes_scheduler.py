@@ -396,8 +396,6 @@ def app_to_resource(
                 "replicas": 1,
                 "name": name,
                 "template": pod,
-                "backoffLimit": 0,
-                "imagePullPolicy": "Always",
             }
             if role.max_retries > 0:
                 task["maxRetry"] = role.max_retries
@@ -425,7 +423,6 @@ does NOT support retries correctly. More info: https://github.com/volcano-sh/vol
             "svc": ["--publish-not-ready-addresses"],
             "env": [],
         },
-        "backoffLimit": 0,
     }
     if priority_class is not None:
         job_spec["priorityClassName"] = priority_class
