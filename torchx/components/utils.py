@@ -102,7 +102,8 @@ def sh(
                 See scheduler documentation for more info.
     """
 
-    escaped_args = " ".join(shlex.quote(arg) for arg in args)
+    # escaped_args = " ".join(shlex.quote(arg) for arg in args)
+    escaped_args = " ".join(args)
     if env is None:
         env = {}
     env.setdefault("LOGLEVEL", os.getenv("LOGLEVEL", "WARNING"))
