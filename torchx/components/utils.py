@@ -103,7 +103,7 @@ def sh(
     """
 
     # escaped_args = " ".join(shlex.quote(arg) for arg in args)
-    escaped_args = " ".join(args)
+    escaped_args = " ".join(f"\"{a}\"" for a in args)
     if env is None:
         env = {}
     env.setdefault("LOGLEVEL", os.getenv("LOGLEVEL", "WARNING"))
