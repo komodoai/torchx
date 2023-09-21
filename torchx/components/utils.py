@@ -19,6 +19,14 @@ import torchx
 import torchx.specs as specs
 from torchx.specs import macros
 
+class _noquote(str):
+    """
+    _noquote is a wrapper around str that indicates that the argument shouldn't
+    be passed through shlex.quote.
+    """
+
+    pass
+
 
 def echo(
     msg: str = "hello world", image: str = torchx.IMAGE, num_replicas: int = 1
@@ -109,6 +117,8 @@ def sh(
         env = {}
     env.setdefault("LOGLEVEL", os.getenv("LOGLEVEL", "WARNING"))
 
+    node_0_ip_address = _noquote(f"$${{{macros.rank0_env}:=localhost}}")
+
     return specs.AppDef(
         name="sh",
         roles=[
@@ -116,7 +126,7 @@ def sh(
                 name="sh",
                 image=image,
                 entrypoint="sh",
-                args=["-c", f"export NODE_INDEX={macros.replica_id}; export NNODES={num_replicas}; export NODE_0_IP_ADDRESS=${macros.rank0_env}; " + escaped_args],
+                args=["-c", f"export NODE_INDEX={macros.replica_id}; export NNODES={num_replicas}; export NODE_0_IP_ADDRESS={node_0_ip_address}; " + escaped_args],
                 num_replicas=num_replicas,
                 resource=specs.resource(cpu=cpu, gpu=gpu, memMB=memMB, h=h),
                 env=env,
