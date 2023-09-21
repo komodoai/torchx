@@ -17,6 +17,7 @@ from typing import Any, Dict, List, Optional
 
 import torchx
 import torchx.specs as specs
+from torchx.specs import macros
 
 
 def echo(
@@ -115,7 +116,7 @@ def sh(
                 name="sh",
                 image=image,
                 entrypoint="sh",
-                args=["-c", escaped_args],
+                args=["-c", f"NODE_INDEX={macros.replica_id}", f"NNODES={num_replicas}", f"NODE_0_IP_ADDRESS={macros.rank0_env}", escaped_args],
                 num_replicas=num_replicas,
                 resource=specs.resource(cpu=cpu, gpu=gpu, memMB=memMB, h=h),
                 env=env,
