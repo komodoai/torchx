@@ -116,7 +116,7 @@ def sh(
                 name="sh",
                 image=image,
                 entrypoint="sh",
-                args=["-c", f"export NODE_INDEX={macros.replica_id}; export NNODES={num_replicas}; export NODE_0_IP_ADDRESS=${macros.rank0_env} " + escaped_args],
+                args=["-c", f"export NODE_INDEX={macros.replica_id}; export NNODES={num_replicas}; export NODE_0_IP_ADDRESS=${macros.rank0_env}; " + escaped_args],
                 num_replicas=num_replicas,
                 resource=specs.resource(cpu=cpu, gpu=gpu, memMB=memMB, h=h),
                 env=env,
