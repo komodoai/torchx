@@ -730,6 +730,17 @@ class KubernetesScheduler(DockerWorkspaceMixin, Scheduler[KubernetesOpts]):
                             id=int(idx), role=role, state=state, hostname=""
                         )
                     )
+
+                    non_running_states = {
+                        ReplicaState.PENDING: AppState.PENDING,
+                        ReplicaState.UNKNOWN: AppState.UNKNOWN,
+                        ReplicaState.UNSUBMITTED: AppState.PENDING,
+                    }
+
+                    if state in non_running_states:
+                        new_app_state = non_running_states[state]
+                        # unknown has higher precendence than pending
+                        app_state = new_app_state if app_state != AppState.UNKNOWN else app_state
             elif app_state == AppState.RUNNING:
                 # if no tasks and running -- pods haven't been created yet
                 app_state = AppState.PENDING
