@@ -730,6 +730,9 @@ class KubernetesScheduler(DockerWorkspaceMixin, Scheduler[KubernetesOpts]):
                             id=int(idx), role=role, state=state, hostname=""
                         )
                     )
+            elif app_state == AppState.RUNNING:
+                # if no tasks and running -- pods haven't been created yet
+                app_state = AppState.PENDING
         else:
             app_state = AppState.UNKNOWN
         return DescribeAppResponse(
