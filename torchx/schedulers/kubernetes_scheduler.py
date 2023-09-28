@@ -365,6 +365,7 @@ def app_to_resource(
     job level. When using the APPLICATION retry policy, the job level retry
     count is set to the minimum of the max_retries of the roles.
     """
+    scheduler_name = "volcano"
     tasks = []
     unique_app_id = normalize_str(make_unique(app.name))
     for role_idx, role in enumerate(app.roles):
@@ -410,11 +411,16 @@ does NOT support retries correctly. More info: https://github.com/volcano-sh/vol
                 task["minAvailable"] = (
                     1 if replica_id < role.min_replicas else 0
                 )
+            
+            if role.num_replicas == 1:
+                task["minAvailable"] = 0
+                scheduler_name = "default-scheduler"
+
             tasks.append(task)
 
     job_retries = min(role.max_retries for role in app.roles)
     job_spec = {
-        "schedulerName": "volcano",
+        "schedulerName": scheduler_name,
         "queue": queue,
         "tasks": tasks,
         "maxRetry": job_retries,
